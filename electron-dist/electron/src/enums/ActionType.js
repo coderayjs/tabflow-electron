@@ -1,0 +1,21 @@
+export var ActionType;
+(function (ActionType) {
+    ActionType["Login"] = "Login";
+    ActionType["Logout"] = "Logout";
+    ActionType["DealerAssigned"] = "DealerAssigned";
+    ActionType["DealerRemoved"] = "DealerRemoved";
+    ActionType["DealerUpdated"] = "DealerUpdated";
+    ActionType["DealerSentToBreak"] = "DealerSentToBreak";
+    ActionType["DealerReturnedFromBreak"] = "DealerReturnedFromBreak";
+    ActionType["DealerSentHome"] = "DealerSentHome";
+    ActionType["PushExecuted"] = "PushExecuted";
+    ActionType["ScheduleGenerated"] = "ScheduleGenerated";
+    ActionType["ManualOverride"] = "ManualOverride";
+    ActionType["TableOpened"] = "TableOpened";
+    ActionType["TableClosed"] = "TableClosed";
+    ActionType["SettingsChanged"] = "SettingsChanged";
+    ActionType["ReportGenerated"] = "ReportGenerated";
+    ActionType["BreakStarted"] = "BreakStarted";
+    ActionType["BreakEnded"] = "BreakEnded";
+    ActionType["DealerStatusChanged"] = "DealerStatusChanged";
+})(ActionType || (ActionType = {}));
