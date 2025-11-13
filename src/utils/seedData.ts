@@ -34,7 +34,20 @@ export async function seedDatabase() {
     'Supervisor'
   );
 
-  // Create sample dealers
+  // Create sample dealers with profile images
+  const dealerImages = [
+    '/dealers/download.jpeg',
+    '/dealers/download (2).jpeg',
+    '/dealers/images (1).jpeg',
+    '/dealers/images (2).jpeg',
+    '/dealers/images (3).jpeg',
+    '/dealers/images (5).jpeg',
+    '/dealers/images (6).jpeg',
+    '/dealers/istockphoto-1355051102-612x612.jpg',
+    '/dealers/Marianela Collado - Headshot.jpg',
+    '/dealers/portrait-surprised-man-forty-years_209484-974.avif',
+  ];
+
   const dealers = [
     { number: 'DEAL001', firstName: 'Sarah', lastName: 'Martinez', role: 'Dealer' },
     { number: 'DEAL002', firstName: 'Michael', lastName: 'Chen', role: 'Dealer' },
@@ -46,7 +59,8 @@ export async function seedDatabase() {
     { number: 'DEAL008', firstName: 'Robert', lastName: 'Brown', role: 'Dealer' },
   ];
 
-  for (const dealer of dealers) {
+  for (let i = 0; i < dealers.length; i++) {
+    const dealer = dealers[i];
     const employee = await authService.registerEmployee(
       dealer.number,
       dealer.firstName,
@@ -55,7 +69,7 @@ export async function seedDatabase() {
       dealer.role
     );
 
-    // Create dealer record
+    // Create dealer record with profile image
     const dealersTable = db.tables.get('Dealers') || [];
     dealersTable.push({
       id: dealersTable.length + 1,
@@ -67,6 +81,7 @@ export async function seedDatabase() {
       lastBreakTime: null,
       lastMealTime: null,
       preferredPit: null,
+      profileImage: dealerImages[i % dealerImages.length], // Cycle through available images
       certifications: [],
       assignmentHistory: [],
       createdAt: new Date().toISOString(),
