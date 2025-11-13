@@ -38,7 +38,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isAuthenticated: false, currentUser: null });
   },
 
-  checkAuth: async () => {
+  checkAuth: () => {
     // For web version, check local storage or just remain logged out
     // In a real app, you'd check for stored auth tokens
     const storedUser = localStorage.getItem('currentUser');

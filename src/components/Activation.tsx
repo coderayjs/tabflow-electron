@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Key } from 'lucide-react';
+import { useActivationStore } from '../stores/activationStore';
 
 export default function Activation() {
   const [licenseKey, setLicenseKey] = useState('');
@@ -8,6 +9,13 @@ export default function Activation() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { activate, isActivated } = useActivationStore();
+
+  // Redirect if already activated
+  if (isActivated) {
+    navigate('/login');
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,11 +23,15 @@ export default function Activation() {
     setLoading(true);
 
     try {
-      // Simulate activation
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      navigate('/login');
+      const success = await activate(companyName, licenseKey);
+      
+      if (success) {
+        navigate('/login');
+      } else {
+        setError('Invalid license key. Please check and try again.');
+      }
     } catch (err) {
-      setError('Invalid license key');
+      setError('Activation failed. Please try again.');
     } finally {
       setLoading(false);
     }
