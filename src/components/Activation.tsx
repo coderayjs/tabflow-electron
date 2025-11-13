@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Key } from 'lucide-react';
+import { Shield, Key, CheckCircle } from 'lucide-react';
 import { useActivationStore } from '../stores/activationStore';
 
 export default function Activation() {
@@ -8,11 +8,12 @@ export default function Activation() {
   const [companyName, setCompanyName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
-  const { activate, isActivated } = useActivationStore();
+  const { activate, isActivated, companyName: activatedCompany } = useActivationStore();
 
   // Redirect if already activated
-  if (isActivated) {
+  if (isActivated && !showSuccess) {
     navigate('/login');
     return null;
   }
@@ -26,7 +27,7 @@ export default function Activation() {
       const success = await activate(companyName, licenseKey);
       
       if (success) {
-        navigate('/login');
+        setShowSuccess(true);
       } else {
         setError('Invalid license key. Please check and try again.');
       }
@@ -37,6 +38,65 @@ export default function Activation() {
     }
   };
 
+  const handleProceed = () => {
+    navigate('/login');
+  };
+
+  // Success Screen
+  if (showSuccess) {
+    return (
+      <div 
+        className="min-h-screen relative overflow-hidden flex items-center justify-center p-8"
+        style={{
+          backgroundImage: 'url(/images/realbg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="relative z-10 w-full max-w-2xl">
+          <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-12 lg:p-16 border border-white/20 shadow-2xl">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-6">
+                <CheckCircle className="w-12 h-12 text-green-400" />
+              </div>
+              
+              <h1 className="text-4xl font-bold text-white mb-4">Activation Successful!</h1>
+              
+              <p className="text-white/90 text-lg mb-2">
+                Your TableFlo license has been successfully activated.
+              </p>
+              
+              {activatedCompany && (
+                <p className="text-white/70 text-base mb-8">
+                  <span className="font-semibold">{activatedCompany}</span> is now ready to use TableFlo.
+                </p>
+              )}
+              
+              <div className="bg-white/10 rounded-lg p-6 mb-8 text-left">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Shield className="w-5 h-5 text-green-400" />
+                  <span className="text-white font-semibold">License Activated</span>
+                </div>
+                <p className="text-white/80 text-sm">
+                  You now have full access to all TableFlo features including dealer management, 
+                  table assignments, break scheduling, and comprehensive analytics.
+                </p>
+              </div>
+              
+              <button
+                onClick={handleProceed}
+                className="w-full bg-[#FA812F] hover:bg-[#E6721A] text-white font-semibold py-4 px-8 rounded-lg transition-all duration-200 shadow-lg text-lg"
+              >
+                Proceed to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Activation Form
   return (
     <div 
       className="min-h-screen relative overflow-hidden flex items-center justify-center p-8"
