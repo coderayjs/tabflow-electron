@@ -5,12 +5,38 @@ export async function seedDatabase() {
   const db = await getDatabase();
   const authService = new AuthenticationService();
 
+  // Dealer images array
+  const dealerImages = [
+    '/images/dealers/download.jpeg',
+    '/images/dealers/download (2).jpeg',
+    '/images/dealers/images (1).jpeg',
+    '/images/dealers/images (2).jpeg',
+    '/images/dealers/images (3).jpeg',
+    '/images/dealers/images (5).jpeg',
+    '/images/dealers/images (6).jpeg',
+    '/images/dealers/istockphoto-1355051102-612x612.jpg',
+    '/images/dealers/Marianela Collado - Headshot.jpg',
+    '/images/dealers/portrait-surprised-man-forty-years_209484-974.avif',
+  ];
+
   // Check if admin exists
   const employees = db.tables.get('Employees') || [];
   const adminExists = employees.some((emp: any) => emp.employeeNumber === 'ADMIN001');
 
+  // Update existing dealers with images if they don't have them
   if (adminExists) {
-    console.log('Database already seeded');
+    const dealersTable = db.tables.get('Dealers') || [];
+    let updated = false;
+    dealersTable.forEach((dealer: any, index: number) => {
+      if (!dealer.profileImage) {
+        dealer.profileImage = dealerImages[index % dealerImages.length];
+        updated = true;
+      }
+    });
+    if (updated) {
+      saveDatabase();
+      console.log('Updated existing dealers with profile images');
+    }
     return;
   }
 
@@ -34,19 +60,6 @@ export async function seedDatabase() {
     'Supervisor'
   );
 
-  // Create sample dealers with profile images
-  const dealerImages = [
-    '/dealers/download.jpeg',
-    '/dealers/download (2).jpeg',
-    '/dealers/images (1).jpeg',
-    '/dealers/images (2).jpeg',
-    '/dealers/images (3).jpeg',
-    '/dealers/images (5).jpeg',
-    '/dealers/images (6).jpeg',
-    '/dealers/istockphoto-1355051102-612x612.jpg',
-    '/dealers/Marianela Collado - Headshot.jpg',
-    '/dealers/portrait-surprised-man-forty-years_209484-974.avif',
-  ];
 
   const dealers = [
     { number: 'DEAL001', firstName: 'Sarah', lastName: 'Martinez', role: 'Dealer' },
