@@ -78,93 +78,144 @@ export default function Analytics() {
     ]);
   };
 
-  const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#6366f1'];
+  // Professional color palette - limited to 2-3 colors
+  const PRIMARY_COLOR = '#3b82f6'; // Blue
+  const SECONDARY_COLOR = '#8b5cf6'; // Purple
+  const ACCENT_COLOR = '#10b981'; // Green for positive metrics
+  
+  // Simplified colors for charts
+  const CHART_COLORS = [PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR];
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'} p-6`}>
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-3">
         <Breadcrumb />
         {/* Header */}
         <div>
-          <h2 className={`text-3xl font-bold flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-            <div className={`p-2  ${isDark ? 'bg-blue-500/10' : 'bg-blue-100'}`}>
-              <Activity className={isDark ? 'text-blue-400' : 'text-blue-600'} size={28} />
+          <h2 className={`text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+              <Activity className={isDark ? 'text-slate-400' : 'text-gray-500'} size={20} />
             </div>
             Analytics Dashboard
           </h2>
-          <p className={`mt-2 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Real-time insights and performance metrics</p>
+          <p className={`mt-1 text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Real-time insights and performance metrics</p>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <GlassCard className="p-6" hover={false}>
-            <div className="flex items-center justify-between mb-2">
-              <Users className="text-blue-400" size={24} />
-              <TrendingUp className="text-green-400" size={16} />
+        {/* KPI Cards - Matching Dashboard style */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+          <GlassCard className="p-2.5" hover={false}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Users className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
+                </div>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Total Dealers</p>
+              </div>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>{stats.totalDealers}</span>
+              </p>
             </div>
-            <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stats.totalDealers}</p>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Total Dealers</p>
           </GlassCard>
 
-          <GlassCard className="p-6" hover={false}>
-            <div className="flex items-center justify-between mb-2">
-              <Table2 className="text-emerald-400" size={24} />
-              <TrendingUp className="text-green-400" size={16} />
+          <GlassCard className="p-2.5" hover={false}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Table2 className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
+                </div>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Active Tables</p>
+              </div>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>{stats.activeTables}</span>
+              </p>
             </div>
-            <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stats.activeTables}</p>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Active Tables</p>
           </GlassCard>
 
-          <GlassCard className="p-6" hover={false}>
-            <div className="flex items-center justify-between mb-2">
-              <Activity className="text-purple-400" size={24} />
-              <TrendingUp className="text-green-400" size={16} />
+          <GlassCard className="p-2.5" hover={false}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Activity className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
+                </div>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Total Rotations</p>
+              </div>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>{stats.totalAssignments}</span>
+              </p>
             </div>
-            <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stats.totalAssignments}</p>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Total Rotations</p>
           </GlassCard>
 
-          <GlassCard className="p-6" hover={false}>
-            <div className="flex items-center justify-between mb-2">
-              <Clock className="text-amber-400" size={24} />
+          <GlassCard className="p-2.5" hover={false}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Clock className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
+                </div>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Avg Rotation</p>
+              </div>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>{stats.avgRotationTime}m</span>
+              </p>
             </div>
-            <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stats.avgRotationTime}m</p>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Avg Rotation</p>
           </GlassCard>
 
-          <GlassCard className="p-6" hover={false}>
-            <div className="flex items-center justify-between mb-2">
-              <TrendingUp className="text-blue-400" size={24} />
+          <GlassCard className="p-2.5" hover={false}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <TrendingUp className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
+                </div>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Utilization</p>
+              </div>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>{stats.dealerUtilization}%</span>
+              </p>
             </div>
-            <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{stats.dealerUtilization}%</p>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Utilization</p>
           </GlassCard>
         </div>
 
         {/* Charts Row 1 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Rotation Trends */}
-          <GlassCard className="p-6" hover={false}>
-            <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>Rotation Trends</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <GlassCard className="p-4" hover={false}>
+            <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Rotation Trends</h3>
+            <ResponsiveContainer width="100%" height={200}>
               <LineChart data={rotationTrends}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                <XAxis dataKey="time" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                  labelStyle={{ color: '#e2e8f0' }}
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} />
+                <XAxis 
+                  dataKey="time" 
+                  stroke={isDark ? '#94a3b8' : '#64748b'} 
+                  tick={{ fill: isDark ? '#94a3b8' : '#64748b', fontSize: 12 }}
                 />
-                <Legend />
-                <Line type="monotone" dataKey="rotations" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6' }} />
+                <YAxis 
+                  stroke={isDark ? '#94a3b8' : '#64748b'} 
+                  tick={{ fill: isDark ? '#94a3b8' : '#64748b', fontSize: 12 }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: isDark ? '#1e293b' : '#ffffff', 
+                    border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`, 
+                    borderRadius: '8px',
+                    color: isDark ? '#e2e8f0' : '#1e293b'
+                  }}
+                  labelStyle={{ color: isDark ? '#e2e8f0' : '#1e293b' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="rotations" 
+                  stroke={PRIMARY_COLOR} 
+                  strokeWidth={2.5} 
+                  dot={{ fill: PRIMARY_COLOR, r: 4 }} 
+                  activeDot={{ r: 6 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </GlassCard>
 
           {/* Dealer Status Distribution */}
-          <GlassCard className="p-6" hover={false}>
-            <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>Dealer Status Distribution</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <GlassCard className="p-4" hover={false}>
+            <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Dealer Status</h3>
+            <ResponsiveContainer width="100%" height={200}>
               <PieChart>
                 <Pie
                   data={dealerStatusData}
@@ -172,16 +223,21 @@ export default function Analytics() {
                   cy="50%"
                   labelLine={false}
                   label={({ name, percent }: any) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={100}
-                  fill="#8884d8"
+                  outerRadius={65}
+                  fill={PRIMARY_COLOR}
                   dataKey="value"
                 >
                   {dealerStatusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
+                  contentStyle={{ 
+                    backgroundColor: isDark ? '#1e293b' : '#ffffff', 
+                    border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`, 
+                    borderRadius: '8px',
+                    color: isDark ? '#e2e8f0' : '#1e293b'
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -189,65 +245,77 @@ export default function Analytics() {
         </div>
 
         {/* Charts Row 2 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {/* Table Activity by Game Type */}
-          <GlassCard className="p-6" hover={false}>
-            <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>Active Tables by Game Type</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <GlassCard className="p-4" hover={false}>
+            <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Active Tables by Game Type</h3>
+            <ResponsiveContainer width="100%" height={200}>
               <BarChart data={tableActivityData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                <XAxis dataKey="name" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                  labelStyle={{ color: '#e2e8f0' }}
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#334155' : '#e2e8f0'} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke={isDark ? '#94a3b8' : '#64748b'} 
+                  tick={{ fill: isDark ? '#94a3b8' : '#64748b', fontSize: 12 }}
                 />
-                <Bar dataKey="value" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
+                <YAxis 
+                  stroke={isDark ? '#94a3b8' : '#64748b'} 
+                  tick={{ fill: isDark ? '#94a3b8' : '#64748b', fontSize: 12 }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: isDark ? '#1e293b' : '#ffffff', 
+                    border: `1px solid ${isDark ? '#334155' : '#e2e8f0'}`, 
+                    borderRadius: '8px',
+                    color: isDark ? '#e2e8f0' : '#1e293b'
+                  }}
+                  labelStyle={{ color: isDark ? '#e2e8f0' : '#1e293b' }}
+                />
+                <Bar dataKey="value" fill={PRIMARY_COLOR} radius={[4, 4, 0, 0]} barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </GlassCard>
 
           {/* Performance Metrics */}
-          <GlassCard className="p-6" hover={false}>
-            <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>Performance Metrics</h3>
-            <div className="space-y-4">
+          <GlassCard className="p-4" hover={false}>
+            <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>Performance Metrics</h3>
+            <div className="space-y-3">
               <div>
-                <div className="flex justify-between text-sm mb-2">
+                <div className="flex justify-between text-xs mb-1.5">
                   <span className={isDark ? 'text-slate-400' : 'text-gray-600'}>Dealer Efficiency</span>
                   <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>92%</span>
                 </div>
-                <div className="w-full bg-slate-700/30  h-3">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 " style={{ width: '92%' }}></div>
+                <div className={`w-full h-2 rounded-full ${isDark ? 'bg-slate-900' : 'bg-gray-200'}`}>
+                  <div className={`h-2 rounded-full ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`} style={{ width: '92%' }}></div>
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-sm mb-2">
+                <div className="flex justify-between text-xs mb-1.5">
                   <span className={isDark ? 'text-slate-400' : 'text-gray-600'}>Table Coverage</span>
                   <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>87%</span>
                 </div>
-                <div className="w-full bg-slate-700/30  h-3">
-                  <div className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 " style={{ width: '87%' }}></div>
+                <div className={`w-full h-2 rounded-full ${isDark ? 'bg-slate-900' : 'bg-gray-200'}`}>
+                  <div className={`h-2 rounded-full ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`} style={{ width: '87%' }}></div>
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-sm mb-2">
+                <div className="flex justify-between text-xs mb-1.5">
                   <span className={isDark ? 'text-slate-400' : 'text-gray-600'}>Break Compliance</span>
                   <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>98%</span>
                 </div>
-                <div className="w-full bg-slate-700/30  h-3">
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 " style={{ width: '98%' }}></div>
+                <div className={`w-full h-2 rounded-full ${isDark ? 'bg-slate-900' : 'bg-gray-200'}`}>
+                  <div className={`h-2 rounded-full ${isDark ? 'bg-green-500' : 'bg-green-600'}`} style={{ width: '98%' }}></div>
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between text-sm mb-2">
+                <div className="flex justify-between text-xs mb-1.5">
                   <span className={isDark ? 'text-slate-400' : 'text-gray-600'}>Rotation Timing</span>
                   <span className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>95%</span>
                 </div>
-                <div className="w-full bg-slate-700/30  h-3">
-                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 " style={{ width: '95%' }}></div>
+                <div className={`w-full h-2 rounded-full ${isDark ? 'bg-slate-900' : 'bg-gray-200'}`}>
+                  <div className={`h-2 rounded-full ${isDark ? 'bg-blue-500' : 'bg-blue-600'}`} style={{ width: '95%' }}></div>
                 </div>
               </div>
             </div>

@@ -627,49 +627,49 @@ export default function Assignments() {
   }
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'} p-6`}>
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'} p-4`}>
+      <div className="max-w-7xl mx-auto space-y-3">
         <Breadcrumb />
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h2 className={`text-3xl font-bold flex items-center gap-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              <div className={`p-2  ${isDark ? 'bg-blue-500/10' : 'bg-blue-100'}`}>
-                <Shuffle className={isDark ? 'text-blue-400' : 'text-blue-600'} size={28} />
+            <h2 className={`text-2xl font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                <Shuffle className={isDark ? 'text-slate-400' : 'text-gray-500'} size={20} />
               </div>
               Dealer Assignments
             </h2>
-            <p className={`mt-2 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Manage dealer rotations and table assignments</p>
+            <p className={`mt-1 text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Manage dealer rotations and table assignments</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <button
               onClick={handleAIGenerate}
               disabled={aiGenerating}
-              className="px-6 py-3 bg-[#FA812F] hover:bg-[#E6721A] text-white  flex items-center gap-2 transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+              className="px-4 py-2 bg-[#FA812F] hover:bg-[#E6721A] text-white text-sm flex items-center gap-2 transition-all disabled:opacity-50"
             >
-              <Sparkles size={20} />
+              <Sparkles size={16} />
               {aiGenerating ? 'Generating...' : 'AI Schedule'}
             </button>
             <button
               onClick={handlePushAll}
-              className="px-6 py-3 bg-[#FA812F] hover:bg-[#E6721A] text-white flex items-center gap-2 transition-all shadow-lg hover:shadow-xl"
+              className="px-4 py-2 bg-[#FA812F] hover:bg-[#E6721A] text-white text-sm flex items-center gap-2 transition-all"
             >
-              <RotateCcw size={20} />
+              <RotateCcw size={16} />
               Push All
             </button>
             <button
               onClick={() => setShowSwapModal(true)}
-              className={`px-6 py-3 flex items-center gap-2 transition-all shadow-lg hover:shadow-xl ${isDark ? 'bg-white hover:bg-gray-50 text-gray-900' : 'bg-black hover:bg-gray-900 text-white'}`}
+              className={`px-4 py-2 text-sm flex items-center gap-2 transition-all ${isDark ? 'bg-white hover:bg-gray-50 text-gray-900' : 'bg-black hover:bg-gray-900 text-white'}`}
             >
-              <ArrowRight size={20} />
+              <ArrowRight size={16} />
               Swap Dealers
             </button>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <GlassCard className="p-6 relative" hover={false}>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <GlassCard className="p-4 relative" hover={false}>
             <div className="absolute top-4 right-4 dropdown-menu">
               <button
                 onClick={() => setShowTablesMenu(!showTablesMenu)}
@@ -753,8 +753,8 @@ export default function Assignments() {
             </div>
           </GlassCard>
 
-          <GlassCard className="p-6 relative" hover={false}>
-            <div className="absolute top-4 right-4 dropdown-menu">
+          <GlassCard className="p-4 relative" hover={false}>
+            <div className="absolute top-3 right-3 dropdown-menu">
               <button
                 onClick={() => setShowDealersMenu(!showDealersMenu)}
                 className={`p-1 rounded transition-all ${isDark ? 'hover:bg-slate-800 text-slate-500' : 'hover:bg-gray-100 text-gray-400'}`}
@@ -830,8 +830,8 @@ export default function Assignments() {
             </div>
           </GlassCard>
 
-          <GlassCard className="p-6 relative" hover={false}>
-            <div className="absolute top-4 right-4 dropdown-menu">
+          <GlassCard className="p-4 relative" hover={false}>
+            <div className="absolute top-3 right-3 dropdown-menu">
               <button
                 onClick={() => setShowBreakMenu(!showBreakMenu)}
                 className={`p-1 rounded transition-all ${isDark ? 'hover:bg-slate-800 text-slate-500' : 'hover:bg-gray-100 text-gray-400'}`}
@@ -900,7 +900,7 @@ export default function Assignments() {
             </div>
           </GlassCard>
 
-          <GlassCard className="p-6" hover={false}>
+          <GlassCard className="p-4" hover={false}>
             <div className="mb-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className={`p-2 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
@@ -934,9 +934,9 @@ export default function Assignments() {
         </div>
 
         {/* Current Assignments */}
-        <GlassCard className="p-6" hover={false}>
-          <div className="flex items-center gap-4 mb-6">
-            <h3 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Current Assignments</h3>
+        <GlassCard className="p-4" hover={false}>
+          <div className="flex items-center gap-3 mb-3">
+            <h3 className={`text-base font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Current Assignments</h3>
             {aiInsights.length > 0 && (
               <>
                 <div className={`w-px h-6 ${isDark ? 'bg-slate-700' : 'bg-gray-300'}`}></div>
@@ -1101,9 +1101,9 @@ export default function Assignments() {
         </GlassCard>
 
         {/* Available Dealers */}
-        <GlassCard className="p-6" hover={false}>
-          <h3 className={`text-xl font-semibold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>Available Dealers <span className={`text-sm font-normal ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>(Drag to assign)</span></h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <GlassCard className="p-4" hover={false}>
+          <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Available Dealers <span className={`text-sm font-normal ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>(Drag to assign)</span></h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             {availableDealers.map((dealer) => {
               const stats = getDealerStats(dealer.id);
               const hireDate = dealer.employee?.hireDate ? new Date(dealer.employee.hireDate) : null;
