@@ -178,36 +178,36 @@ export default function Dashboard() {
             <p className={isDark ? 'text-slate-400' : 'text-gray-600'}>Welcome back, {currentUser?.firstName}. Here's your casino overview.</p>
           </div>
           {/* Redesigned Time Component */}
-          <GlassCard className="px-5 py-4" hover={false}>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3 flex-1">
-                <div className={`p-2.5 rounded-xl ${isDark ? 'bg-[#FA812F]/20' : 'bg-[#FA812F]/10'}`}>
-                  <Clock className="w-5 h-5 text-[#FA812F]" />
+          <GlassCard className="px-4 py-3" hover={false}>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5 flex-1">
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-[#FA812F]/20' : 'bg-[#FA812F]/10'}`}>
+                  <Clock className="w-4 h-4 text-[#FA812F]" />
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-baseline gap-2">
-                    <p className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} font-mono tracking-tight`}>
+                  <div className="flex items-baseline gap-1.5">
+                    <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} font-mono tracking-tight`}>
                       {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
                     </p>
-                    <p className={`text-lg font-mono ${isDark ? 'text-slate-400' : 'text-gray-500'} font-semibold`}>
+                    <p className={`text-sm font-mono ${isDark ? 'text-slate-400' : 'text-gray-500'} font-semibold`}>
                       {String(currentTime.getSeconds()).padStart(2, '0')}
                     </p>
                   </div>
-                  <p className={`text-xs font-medium mt-0.5 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
+                  <p className={`text-[10px] font-medium mt-0.5 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
                     {currentTime.toLocaleDateString('en-US', { weekday: 'long' })}
                   </p>
                 </div>
               </div>
-              <div className={`h-12 w-px ${isDark ? 'bg-slate-700/50' : 'bg-gray-300'}`}></div>
-              <div className="flex items-center gap-3">
-                <div className={`p-2.5 rounded-xl ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
-                  <Calendar className="w-5 h-5 text-blue-500" />
+              <div className={`h-10 w-px ${isDark ? 'bg-slate-700/50' : 'bg-gray-300'}`}></div>
+              <div className="flex items-center gap-2">
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
+                  <Calendar className="w-4 h-4 text-blue-500" />
                 </div>
                 <div>
-                  <p className={`text-sm font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-xs font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                     {currentTime.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </p>
-                  <p className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
+                  <p className={`text-[10px] font-medium ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
                     {currentTime.toLocaleDateString('en-US', { year: 'numeric' })}
                   </p>
                 </div>
@@ -217,58 +217,58 @@ export default function Dashboard() {
         </div>
 
         {/* Enhanced KPI Cards matching Assignments style */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <GlassCard onClick={() => navigate('/dealers')} className="p-3" hover={true}>
-            <div className="mb-2">
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
-                  <Users className={isDark ? 'text-slate-400' : 'text-gray-500'} size={18} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          <GlassCard onClick={() => navigate('/dealers')} className="p-2.5" hover={true}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Users className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
                 </div>
-                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Total Dealers</p>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Total Dealers</p>
               </div>
-              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 <span className={isDark ? 'text-blue-400' : 'text-blue-600'}>{stats.totalDealers}</span>
               </p>
             </div>
           </GlassCard>
 
-          <GlassCard onClick={() => navigate('/tables')} className="p-3" hover={true}>
-            <div className="mb-2">
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
-                  <Table2 className={isDark ? 'text-slate-400' : 'text-gray-500'} size={18} />
+          <GlassCard onClick={() => navigate('/tables')} className="p-2.5" hover={true}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Table2 className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
                 </div>
-                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Active Tables</p>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Active Tables</p>
               </div>
-              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 <span className={isDark ? 'text-emerald-400' : 'text-emerald-600'}>{stats.activeTables}</span>
               </p>
             </div>
           </GlassCard>
 
-          <GlassCard onClick={() => navigate('/breaks')} className="p-3" hover={true}>
-            <div className="mb-2">
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
-                  <Coffee className={isDark ? 'text-slate-400' : 'text-gray-500'} size={18} />
+          <GlassCard onClick={() => navigate('/breaks')} className="p-2.5" hover={true}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Coffee className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
                 </div>
-                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>On Break</p>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>On Break</p>
               </div>
-              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>{stats.dealersOnBreak}</span>
               </p>
             </div>
           </GlassCard>
 
-          <GlassCard onClick={() => navigate('/assignments')} className="p-3" hover={true}>
-            <div className="mb-2">
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <div className={`p-1.5 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
-                  <Shuffle className={isDark ? 'text-slate-400' : 'text-gray-500'} size={18} />
+          <GlassCard onClick={() => navigate('/assignments')} className="p-2.5" hover={true}>
+            <div className="mb-1.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`p-1 rounded-lg ${isDark ? 'bg-slate-800' : 'bg-gray-100'}`}>
+                  <Shuffle className={isDark ? 'text-slate-400' : 'text-gray-500'} size={16} />
                 </div>
-                <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Rotations Due</p>
+                <p className={`text-[11px] ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Rotations Due</p>
               </div>
-              <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <p className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                 <span className={isDark ? 'text-purple-400' : 'text-purple-600'}>{stats.pendingRotations}</span>
               </p>
             </div>
@@ -276,48 +276,48 @@ export default function Dashboard() {
         </div>
 
         {/* Enhanced Dealer Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
           {/* Current Dealers - Enhanced */}
-          <GlassCard className="p-4" hover={false}>
-            <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Current Dealers</h3>
-            <div className="space-y-2.5">
+          <GlassCard className="p-3" hover={false}>
+            <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Current Dealers</h3>
+            <div className="space-y-2">
               {currentDealers.length > 0 ? currentDealers.map((dealer) => {
                 const progress = Math.min((dealer.rotationTime / 20) * 100, 100);
                 const isWarning = dealer.rotationTime >= 18;
                 const isDanger = dealer.rotationTime >= 20;
                 return (
-                  <div key={dealer.id} className={`p-2.5 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isDanger ? 'border-red-500/50' : isWarning ? 'border-yellow-500/50' : isDark ? 'border-slate-800' : 'border-gray-200'}`}>
-                    <div className="flex items-center gap-2.5 mb-2">
-                      <img 
-                        src={dealer.profileImage || '/images/dealer.png'} 
-                        alt={dealer.employee?.fullName}
-                        className="w-9 h-9 rounded-full object-cover"
+                  <div key={dealer.id} className={`p-2 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isDanger ? 'border-red-500/50' : isWarning ? 'border-yellow-500/50' : isDark ? 'border-slate-800' : 'border-gray-200'}`}>
+                    <div className="flex items-center gap-2 mb-1.5">
+                    <img 
+                      src={dealer.profileImage || '/images/dealer.png'} 
+                      alt={dealer.employee?.fullName}
+                        className="w-7 h-7 rounded-full object-cover"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{dealer.employee?.fullName}</p>
-                        <p className={`text-xs truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>{dealer.table?.tableNumber || 'No table'}</p>
+                        <p className={`text-xs font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{dealer.employee?.fullName}</p>
+                        <p className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>{dealer.table?.tableNumber || 'No table'}</p>
                       </div>
-                      <div className={`text-xs px-2 py-0.5 rounded ${isDanger ? 'bg-red-500/20 text-red-400' : isWarning ? 'bg-yellow-500/20 text-yellow-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                      <div className={`text-[10px] px-1.5 py-0.5 rounded ${isDanger ? 'bg-red-500/20 text-red-400' : isWarning ? 'bg-yellow-500/20 text-yellow-400' : 'bg-blue-500/20 text-blue-400'}`}>
                         {dealer.rotationTime}m
                       </div>
                     </div>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-2">
-                          <Award className={`w-3 h-3 ${isDark ? 'text-yellow-500' : 'text-yellow-600'}`} />
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <div className="flex items-center gap-1.5">
+                          <Award className={`w-2.5 h-2.5 ${isDark ? 'text-yellow-500' : 'text-yellow-600'}`} />
                           <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>Skill:</span>
                           <span className={`font-semibold ${isDark ? 'text-green-400' : 'text-green-600'}`}>{dealer.stats?.skillRating}%</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className={`w-3 h-3 ${isDark ? 'text-blue-500' : 'text-blue-600'}`} />
+                        <div className="flex items-center gap-1.5">
+                          <Clock className={`w-2.5 h-2.5 ${isDark ? 'text-blue-500' : 'text-blue-600'}`} />
                           <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>{dealer.stats?.timeWorked}</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Gamepad2 className={`w-3 h-3 ${isDark ? 'text-purple-500' : 'text-purple-600'}`} />
+                        <div className="flex items-center gap-1.5">
+                          <Gamepad2 className={`w-2.5 h-2.5 ${isDark ? 'text-purple-500' : 'text-purple-600'}`} />
                           <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>{dealer.stats?.gamesCount}</span>
                         </div>
                       </div>
-                      <div className={`h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-gray-200'}`}>
+                      <div className={`h-1 rounded-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-gray-200'}`}>
                         <div 
                           className={`h-full transition-all ${isDanger ? 'bg-red-500' : isWarning ? 'bg-yellow-500' : 'bg-blue-500'}`}
                           style={{ width: `${progress}%` }}
@@ -327,93 +327,93 @@ export default function Dashboard() {
                   </div>
                 );
               }) : (
-                <p className={`text-sm text-center py-4 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>No active dealers</p>
+                <p className={`text-xs text-center py-3 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>No active dealers</p>
               )}
             </div>
           </GlassCard>
 
           {/* Next Dealers - Enhanced */}
-          <GlassCard className="p-4" hover={false}>
-            <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Next Dealers</h3>
-            <div className="space-y-2.5">
+          <GlassCard className="p-3" hover={false}>
+            <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Next Dealers</h3>
+            <div className="space-y-2">
               {availableDealers.length > 0 ? availableDealers.map((dealer) => (
-                <div key={dealer.id} className={`p-2.5 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isDark ? 'border-slate-800' : 'border-gray-200'}`}>
-                  <div className="flex items-center gap-2.5 mb-2">
+                <div key={dealer.id} className={`p-2 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isDark ? 'border-slate-800' : 'border-gray-200'}`}>
+                  <div className="flex items-center gap-2 mb-1.5">
                     <img 
                       src={dealer.profileImage || '/images/dealer.png'} 
                       alt={dealer.employee?.fullName}
-                      className="w-9 h-9 rounded-full object-cover"
+                      className="w-7 h-7 rounded-full object-cover"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{dealer.employee?.fullName}</p>
-                      <p className={`text-xs truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Level {dealer.seniorityLevel}</p>
+                      <p className={`text-xs font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{dealer.employee?.fullName}</p>
+                      <p className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>Level {dealer.seniorityLevel}</p>
                     </div>
-                    <span className="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-400">Ready</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-400">Ready</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <Award className={`w-3 h-3 ${isDark ? 'text-yellow-500' : 'text-yellow-600'}`} />
+                  <div className="flex items-center justify-between text-[10px]">
+                    <div className="flex items-center gap-1.5">
+                      <Award className={`w-2.5 h-2.5 ${isDark ? 'text-yellow-500' : 'text-yellow-600'}`} />
                       <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>Skill:</span>
                       <span className={`font-semibold ${isDark ? 'text-green-400' : 'text-green-600'}`}>{dealer.stats?.skillRating}%</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className={`w-3 h-3 ${isDark ? 'text-blue-500' : 'text-blue-600'}`} />
+                    <div className="flex items-center gap-1.5">
+                      <Clock className={`w-2.5 h-2.5 ${isDark ? 'text-blue-500' : 'text-blue-600'}`} />
                       <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>{dealer.stats?.timeWorked}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Gamepad2 className={`w-3 h-3 ${isDark ? 'text-purple-500' : 'text-purple-600'}`} />
+                    <div className="flex items-center gap-1.5">
+                      <Gamepad2 className={`w-2.5 h-2.5 ${isDark ? 'text-purple-500' : 'text-purple-600'}`} />
                       <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>{dealer.stats?.gamesCount}</span>
                     </div>
                   </div>
                 </div>
               )) : (
-                <p className={`text-sm text-center py-4 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>No available dealers</p>
+                <p className={`text-xs text-center py-3 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>No available dealers</p>
               )}
             </div>
           </GlassCard>
 
           {/* Dealers on Break - Enhanced */}
-          <GlassCard className="p-4" hover={false}>
-            <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Dealers on Break</h3>
-            <div className="space-y-2.5">
+          <GlassCard className="p-3" hover={false}>
+            <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Dealers on Break</h3>
+            <div className="space-y-2">
               {dealersOnBreak.length > 0 ? dealersOnBreak.map((dealer) => {
                 const breakProgress = dealer.remaining > 0 ? ((dealer.breakRecord.expectedDurationMinutes - dealer.remaining) / dealer.breakRecord.expectedDurationMinutes) * 100 : 100;
                 const isOverdue = dealer.remaining <= 0;
                 return (
-                  <div key={dealer.id} className={`p-2.5 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isOverdue ? 'border-red-500/50' : isDark ? 'border-slate-800' : 'border-gray-200'}`}>
-                    <div className="flex items-center gap-2.5 mb-2">
+                  <div key={dealer.id} className={`p-2 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isOverdue ? 'border-red-500/50' : isDark ? 'border-slate-800' : 'border-gray-200'}`}>
+                    <div className="flex items-center gap-2 mb-1.5">
                       <img 
                         src={dealer.profileImage || '/images/dealer.png'} 
                         alt={dealer.employee?.fullName}
-                        className="w-9 h-9 rounded-full object-cover"
+                        className="w-7 h-7 rounded-full object-cover"
                       />
                       <div className="flex-1 min-w-0">
-                        <p className={`text-sm font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{dealer.employee?.fullName}</p>
-                        <p className={`text-xs truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
+                        <p className={`text-xs font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{dealer.employee?.fullName}</p>
+                        <p className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
                           {isOverdue ? 'Overdue' : `${dealer.remaining} min remaining`}
                         </p>
                       </div>
-                      <span className={`text-xs px-2 py-0.5 rounded ${isOverdue ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${isOverdue ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'}`}>
                         {dealer.breakRecord.breakType}
                       </span>
                     </div>
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-2">
-                          <Award className={`w-3 h-3 ${isDark ? 'text-yellow-500' : 'text-yellow-600'}`} />
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-[10px]">
+                        <div className="flex items-center gap-1.5">
+                          <Award className={`w-2.5 h-2.5 ${isDark ? 'text-yellow-500' : 'text-yellow-600'}`} />
                           <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>Skill:</span>
                           <span className={`font-semibold ${isDark ? 'text-green-400' : 'text-green-600'}`}>{dealer.stats?.skillRating}%</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className={`w-3 h-3 ${isDark ? 'text-blue-500' : 'text-blue-600'}`} />
+                        <div className="flex items-center gap-1.5">
+                          <Clock className={`w-2.5 h-2.5 ${isDark ? 'text-blue-500' : 'text-blue-600'}`} />
                           <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>{dealer.stats?.timeWorked}</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Gamepad2 className={`w-3 h-3 ${isDark ? 'text-purple-500' : 'text-purple-600'}`} />
+                        <div className="flex items-center gap-1.5">
+                          <Gamepad2 className={`w-2.5 h-2.5 ${isDark ? 'text-purple-500' : 'text-purple-600'}`} />
                           <span className={isDark ? 'text-slate-300' : 'text-gray-700'}>{dealer.stats?.gamesCount}</span>
                         </div>
                       </div>
-                      <div className={`h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-gray-200'}`}>
+                      <div className={`h-1 rounded-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-gray-200'}`}>
                         <div 
                           className={`h-full transition-all ${isOverdue ? 'bg-red-500' : 'bg-amber-500'}`}
                           style={{ width: `${breakProgress}%` }}
@@ -423,7 +423,7 @@ export default function Dashboard() {
                   </div>
                 );
               }) : (
-                <p className={`text-sm text-center py-4 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>No dealers on break</p>
+                <p className={`text-xs text-center py-3 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>No dealers on break</p>
               )}
             </div>
           </GlassCard>
@@ -431,23 +431,23 @@ export default function Dashboard() {
 
         {/* Active Tables Section */}
         {activeTablesWithDealers.length > 0 && (
-          <GlassCard className="p-4" hover={false}>
-            <h3 className={`text-base font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Active Tables</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          <GlassCard className="p-3" hover={false}>
+            <h3 className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Active Tables</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
               {activeTablesWithDealers.map((table) => (
-                <div key={table.id} className={`p-2.5 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isDark ? 'border-slate-800' : 'border-gray-200'}`}>
-                  <div className="flex items-center gap-2 mb-2">
+                <div key={table.id} className={`p-2 rounded-lg ${isDark ? 'bg-slate-900/50' : 'bg-gray-50'} border ${isDark ? 'border-slate-800' : 'border-gray-200'}`}>
+                  <div className="flex items-center gap-1.5 mb-1.5">
                     <img 
                       src={table.currentDealer?.profileImage || '/images/dealer.png'} 
                       alt={table.currentDealer?.employee?.fullName}
-                      className="w-8 h-8 rounded-full object-cover"
+                      className="w-6 h-6 rounded-full object-cover"
                     />
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{table.tableNumber}</p>
-                      <p className={`text-[10px] truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>{table.currentDealer?.employee?.fullName}</p>
+                      <p className={`text-[11px] font-semibold truncate ${isDark ? 'text-white' : 'text-gray-900'}`}>{table.tableNumber}</p>
+                      <p className={`text-[9px] truncate ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>{table.currentDealer?.employee?.fullName}</p>
                     </div>
                   </div>
-                  <p className={`text-[10px] ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>{table.gameType}</p>
+                  <p className={`text-[9px] ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>{table.gameType}</p>
                 </div>
               ))}
             </div>
