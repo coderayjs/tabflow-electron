@@ -1,8 +1,50 @@
+# Dependencies
 node_modules
+
+# Build outputs
 dist
 dist-electron
+electron-dist
+build
+release
+out
+*.dmg
+*.blockmap
+*.yml
+*.yaml
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment variables
 .env
 .env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Electron
+*.asar
+*.app
+*.exe
+*.deb
+*.rpm
+*.AppImage
 
