@@ -6,7 +6,7 @@ interface AuthState {
   currentUser: Employee | null;
   login: (employeeNumber: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
-  checkAuth: () => Promise<void>;
+  checkAuth: () => void;
   setCurrentUser: (user: Employee) => void;
 }
 
