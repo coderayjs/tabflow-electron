@@ -458,7 +458,7 @@ export default function Dashboard() {
                     </div>
                   );
                 }) : (
-                  <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'} text-center py-4`}>No recent activity</p>
+                  <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'} py-4`}>No recent activity</p>
                       )}
                     </div>
                   );
