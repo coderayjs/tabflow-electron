@@ -4,3 +4,6 @@ export * from './TableService';
 export * from './AssignmentService';
 export * from './BreakService';
 export * from './GameService';
+export * from './TextPromptService';
+export * from './AutoRotationService';
+export * from './SpeechToTextService';

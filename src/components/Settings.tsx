@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useThemeStore } from '../stores/themeStore';
 import { useAuthStore } from '../stores/authStore';
 import { getDatabase, saveDatabase } from '../utils/database';
-import { Settings as SettingsIcon, User, Shield, CreditCard, Users, Bell, Grid, Link, MessageSquare, Zap, Facebook, CheckCircle2, Mail, Smartphone, RotateCcw, Coffee, Shuffle, AlertCircle, Plus, Edit, X, CreditCard as CreditCardIcon } from 'lucide-react';
+import { Settings as SettingsIcon, User, Shield, CreditCard, Users, Bell, Grid, Link, MessageSquare, Zap, Facebook, CheckCircle2, Mail, Smartphone, RotateCcw, Coffee, Shuffle, AlertCircle, Plus, Edit, X, CreditCard as CreditCardIcon, Mic } from 'lucide-react';
 import Breadcrumb from './Breadcrumb';
 import GlassCard from './GlassCard';
 
@@ -48,6 +48,22 @@ export default function Settings() {
   ]);
   
   const [showAddPaymentModal, setShowAddPaymentModal] = useState(false);
+
+  // Speech API configuration
+  const [speechApiKey, setSpeechApiKey] = useState(() => localStorage.getItem('speech_api_key') || 'AIzaSyDqKiQNSG3P4Wsx3Qjy_BSQO2fTgfZIZoE');
+  const [speechProvider, setSpeechProvider] = useState<'webspeech' | 'google' | 'azure' | 'openai'>(() => 
+    (localStorage.getItem('speech_provider') as 'webspeech' | 'google' | 'azure' | 'openai') || 'google'
+  );
+  const [azureRegion, setAzureRegion] = useState(() => localStorage.getItem('azure_speech_region') || 'eastus');
+  const [showSpeechSuccess, setShowSpeechSuccess] = useState(false);
+
+  // Auto-save the provided API key on mount
+  useEffect(() => {
+    if (speechApiKey && speechProvider === 'google' && !localStorage.getItem('speech_api_key')) {
+      localStorage.setItem('speech_api_key', speechApiKey);
+      localStorage.setItem('speech_provider', speechProvider);
+    }
+  }, []);
   const [showAddAddressModal, setShowAddAddressModal] = useState(false);
 
   useEffect(() => {
@@ -99,6 +115,7 @@ export default function Settings() {
     { id: 'team', label: 'Team', icon: Users },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'apps', label: 'Apps', icon: Grid },
+    { id: 'voice', label: 'Voice API', icon: Mic },
   ];
 
   return (
@@ -657,6 +674,184 @@ export default function Settings() {
                       </button>
                     </div>
                   </GlassCard>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'voice' && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className={`text-xl font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>Voice Recognition API</h3>
+                  <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
+                    Configure speech-to-text API for better voice command accuracy in noisy environments
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-slate-300' : 'text-gray-700'}`}>
+                      Speech Provider
+                    </label>
+                    <select
+                      value={speechProvider}
+                      onChange={(e) => setSpeechProvider(e.target.value as 'webspeech' | 'google' | 'azure' | 'openai')}
+                      className={`w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-[#FA812F]/50 ${
+                        isDark ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-gray-300 text-gray-900'
+                      }`}
+                    >
+                      <option value="webspeech">Web Speech API (Free, Browser-based)</option>
+                      <option value="google">Google Cloud Speech-to-Text</option>
+                      <option value="azure">Azure Speech Services</option>
+                      <option value="openai">OpenAI Whisper API</option>
+                    </select>
+                    <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>
+                      {speechProvider === 'webspeech' 
+                        ? 'Uses browser built-in speech recognition (no API key needed)'
+                        : speechProvider === 'google'
+                        ? 'Requires Google Cloud API key. Better accuracy in noisy environments.'
+                        : speechProvider === 'azure'
+                        ? 'Requires Azure Speech Services API key and region. Excellent for professional use.'
+                        : 'Requires OpenAI API key. High accuracy with good noise handling.'}
+                    </p>
+                  </div>
+
+                  {speechProvider !== 'webspeech' && (
+                    <>
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-slate-300' : 'text-gray-700'}`}>
+                          API Key
+                        </label>
+                        <input
+                          type="password"
+                          value={speechApiKey}
+                          onChange={(e) => setSpeechApiKey(e.target.value)}
+                          placeholder={`Enter your ${speechProvider === 'google' ? 'Google Cloud' : speechProvider === 'azure' ? 'Azure' : 'OpenAI'} API key`}
+                          className={`w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-[#FA812F]/50 ${
+                            isDark ? 'bg-slate-900 border-slate-800 text-white placeholder-slate-500' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                          }`}
+                        />
+                        <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>
+                          Your API key is stored locally in your browser
+                        </p>
+                      </div>
+
+                      {speechProvider === 'azure' && (
+                        <div>
+                          <label className={`block text-sm font-medium mb-2 ${isDark ? 'text-slate-300' : 'text-gray-700'}`}>
+                            Azure Region
+                          </label>
+                          <input
+                            type="text"
+                            value={azureRegion}
+                            onChange={(e) => setAzureRegion(e.target.value)}
+                            placeholder="e.g., eastus, westus, westeurope"
+                            className={`w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-[#FA812F]/50 ${
+                              isDark ? 'bg-slate-900 border-slate-800 text-white placeholder-slate-500' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400'
+                            }`}
+                          />
+                          <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>
+                            Your Azure Speech Services region (found in Azure Portal)
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        if (speechProvider !== 'webspeech' && !speechApiKey.trim()) {
+                          alert('Please enter an API key');
+                          return;
+                        }
+                        if (speechProvider === 'azure' && !azureRegion.trim()) {
+                          alert('Please enter an Azure region');
+                          return;
+                        }
+
+                        // Save to localStorage
+                        if (speechProvider === 'webspeech') {
+                          localStorage.removeItem('speech_api_key');
+                          localStorage.removeItem('speech_provider');
+                          localStorage.removeItem('azure_speech_region');
+                        } else {
+                          localStorage.setItem('speech_api_key', speechApiKey);
+                          localStorage.setItem('speech_provider', speechProvider);
+                          if (speechProvider === 'azure') {
+                            localStorage.setItem('azure_speech_region', azureRegion);
+                          } else {
+                            localStorage.removeItem('azure_speech_region');
+                          }
+                        }
+
+                        setShowSpeechSuccess(true);
+                        setTimeout(() => {
+                          setShowSpeechSuccess(false);
+                          // Reload page to apply changes
+                          window.location.reload();
+                        }, 1500);
+                      }}
+                      className="px-6 py-3 bg-[#FA812F] hover:bg-[#E6721A] text-white transition-all"
+                    >
+                      Save Configuration
+                    </button>
+                    {speechProvider !== 'webspeech' && speechApiKey && (
+                      <button
+                        onClick={() => {
+                          localStorage.removeItem('speech_api_key');
+                          localStorage.removeItem('speech_provider');
+                          localStorage.removeItem('azure_speech_region');
+                          setSpeechApiKey('');
+                          setSpeechProvider('webspeech');
+                          setAzureRegion('eastus');
+                          setShowSpeechSuccess(true);
+                          setTimeout(() => {
+                            setShowSpeechSuccess(false);
+                            window.location.reload();
+                          }, 1500);
+                        }}
+                        className={`px-6 py-3 border transition-all ${
+                          isDark 
+                            ? 'bg-slate-800 border-slate-700 text-white hover:bg-slate-700' 
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        Clear & Reset
+                      </button>
+                    )}
+                  </div>
+
+                  {showSpeechSuccess && (
+                    <div className={`p-3 rounded-lg flex items-center gap-2 ${
+                      isDark ? 'bg-green-500/20 border border-green-500/30' : 'bg-green-100 border border-green-300'
+                    }`}>
+                      <CheckCircle2 className={`w-5 h-5 ${isDark ? 'text-green-400' : 'text-green-600'}`} />
+                      <span className={`text-sm ${isDark ? 'text-green-300' : 'text-green-700'}`}>
+                        Configuration saved! Reloading to apply changes...
+                      </span>
+                    </div>
+                  )}
+
+                  <div className={`p-4 rounded-lg ${isDark ? 'bg-slate-800/50 border border-slate-700' : 'bg-blue-50 border border-blue-200'}`}>
+                    <h4 className={`text-sm font-semibold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      Current Configuration
+                    </h4>
+                    <div className="space-y-1 text-xs">
+                      <p className={isDark ? 'text-slate-400' : 'text-gray-600'}>
+                        <span className="font-medium">Provider:</span> {speechProvider === 'webspeech' ? 'Web Speech API' : speechProvider === 'google' ? 'Google Cloud' : speechProvider === 'azure' ? 'Azure Speech Services' : 'OpenAI Whisper'}
+                      </p>
+                      {speechProvider !== 'webspeech' && (
+                        <p className={isDark ? 'text-slate-400' : 'text-gray-600'}>
+                          <span className="font-medium">API Key:</span> {speechApiKey ? `${speechApiKey.substring(0, 10)}...` : 'Not set'}
+                        </p>
+                      )}
+                      {speechProvider === 'azure' && (
+                        <p className={isDark ? 'text-slate-400' : 'text-gray-600'}>
+                          <span className="font-medium">Region:</span> {azureRegion || 'Not set'}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

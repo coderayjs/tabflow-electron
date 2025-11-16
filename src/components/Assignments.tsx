@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { Shuffle, Sparkles, RotateCcw, Users, Table2, Play, Coffee, ArrowRight, Award, Clock, Gamepad2, Bell, AlertTriangle, Plus, MoreVertical, Download, BarChart3 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import AddDealerModal from './AddDealerModal';
+import TextPromptInput from './TextPromptInput';
 import { getDatabase, saveDatabase } from '../utils/database';
 import { DealerStatus, TableStatus, ActionType } from '../enums';
 import { AISchedulerService } from '../services/AISchedulerService';
+import { AutoRotationService } from '../services/AutoRotationService';
 import Breadcrumb from './Breadcrumb';
 import { useThemeStore } from '../stores/themeStore';
 import GlassCard from './GlassCard';
@@ -33,6 +35,7 @@ export default function Assignments() {
   const [showBreakMenu, setShowBreakMenu] = useState(false);
   const [aiInsights, setAiInsights] = useState<string[]>([]);
   const [autoRotateCountdown, setAutoRotateCountdown] = useState(0);
+  const [showTextPrompt, setShowTextPrompt] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const processedExpiries = useRef<Set<number>>(new Set());
   const processedBreakEnds = useRef<Set<number>>(new Set());
@@ -42,12 +45,27 @@ export default function Assignments() {
   useEffect(() => {
     loadData();
     audioRef.current = new Audio();
+    
+    // Auto-assign to empty tables on initial load (after a short delay to ensure data is loaded)
+    setTimeout(() => {
+      handleAutoAssignToEmptyTables();
+    }, 2000);
+    
+    // Set up interval for auto-assignment (every 30 seconds)
+    const autoAssignInterval = setInterval(() => {
+      handleAutoAssignToEmptyTables();
+    }, 30000);
+    
     const interval = setInterval(() => {
       checkExpiredRotations();
       checkExpiredBreaks();
       setTables(prev => [...prev]);
     }, 1000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      clearInterval(interval);
+      clearInterval(autoAssignInterval);
+    };
   }, []);
 
   useEffect(() => {
@@ -317,6 +335,35 @@ export default function Assignments() {
     }
   };
 
+  // Auto-assign dealers to empty tables
+  const handleAutoAssignToEmptyTables = async () => {
+    try {
+      const autoRotationService = new AutoRotationService();
+      const result = await autoRotationService.autoAssignToEmptyTables();
+      
+      if (result.assignmentsCreated > 0) {
+        // Play sound for each assignment
+        for (let i = 0; i < result.assignmentsCreated; i++) {
+          setTimeout(() => {
+            playAlertSound();
+          }, i * 300); // Stagger sounds if multiple assignments
+        }
+        
+        // Reload data to reflect new assignments
+        await loadData();
+        
+        // Show success notification if assignments were created
+        console.log(`Auto-assigned ${result.assignmentsCreated} dealer(s) to table(s): ${result.tablesStaffed.join(', ')}`);
+      }
+      
+      if (result.errors.length > 0) {
+        console.warn('Auto-assignment errors:', result.errors);
+      }
+    } catch (error) {
+      console.error('Error auto-assigning to empty tables:', error);
+    }
+  };
+
   const handleAIGenerate = async () => {
     setAiGenerating(true);
     try {
@@ -515,6 +562,9 @@ export default function Assignments() {
       db.tables.set('AuditLogs', auditLogs);
       saveDatabase();
 
+      // Play dealer push sound on successful assignment
+      playAlertSound();
+
       setShowAssignModal(false);
       setSelectedTable(null);
       setSelectedDealerToAssign(null);
@@ -627,7 +677,7 @@ export default function Assignments() {
   }
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'} p-4`}>
+    <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'} p-4 pb-32`}>
       <div className="max-w-7xl mx-auto space-y-3">
         <Breadcrumb />
         {/* Header */}
@@ -1335,6 +1385,40 @@ export default function Assignments() {
           </GlassCard>
         </div>
       )}
+
+      {/* Floating Button for Text Prompt - Right Side */}
+      <button
+        onClick={() => {
+          playAlertSound();
+          setShowTextPrompt(!showTextPrompt);
+        }}
+        className={`fixed right-4 bottom-4 z-50 p-4 rounded-full shadow-2xl transition-all hover:scale-110 active:scale-95 ${
+          showTextPrompt
+            ? isDark 
+              ? 'bg-[#FA812F] hover:bg-[#E6721A] text-white' 
+              : 'bg-[#FA812F] hover:bg-[#E6721A] text-white'
+            : isDark
+              ? 'bg-[#FA812F]/20 hover:bg-[#FA812F]/30 text-[#FA812F] border-2 border-[#FA812F]/50'
+              : 'bg-[#FA812F]/10 hover:bg-[#FA812F]/20 text-[#FA812F] border-2 border-[#FA812F]/30'
+        }`}
+        title={showTextPrompt ? 'Hide AI Prompt' : 'Show AI Prompt'}
+      >
+        <Sparkles size={24} />
+      </button>
+
+      {/* Text Prompt Input for Natural Language Commands - Bottom of Screen */}
+      <TextPromptInput
+        isVisible={showTextPrompt}
+        onToggle={() => setShowTextPrompt(!showTextPrompt)}
+        onSuccess={(message) => {
+          console.log('Auto-rotation success:', message);
+          loadData();
+        }}
+        onError={(error) => {
+          console.error('Auto-rotation error:', error);
+        }}
+        onDataReload={loadData}
+      />
     </div>
   );
 }

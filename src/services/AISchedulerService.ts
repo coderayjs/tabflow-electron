@@ -1,50 +1,135 @@
 import { getDatabase, saveDatabase } from '../utils/database';
-import { DealerStatus, TableStatus } from '../enums';
+import { DealerStatus, TableStatus, GameType } from '../enums';
+import { AutoRotationService } from './AutoRotationService';
+import { ParsedCommand } from './TextPromptService';
 
 export class AISchedulerService {
+  private autoRotationService: AutoRotationService;
+
+  constructor() {
+    this.autoRotationService = new AutoRotationService();
+  }
+
   async generateOptimalSchedule() {
     const db = await getDatabase();
     const dealers = db.tables.get('Dealers') || [];
     const tables = db.tables.get('Tables') || [];
     const assignments = db.tables.get('Assignments') || [];
 
-    const availableDealers = dealers.filter((d: any) => 
-      d.status === DealerStatus.Available
-    );
-    
-    const openTables = tables.filter((t: any) => 
-      t.status === TableStatus.Open && !t.isLocked
-    );
+    // Find open tables without current assignments (excluding craps and locked tables)
+    const emptyTables = tables.filter((table: any) => {
+      const hasCurrentAssignment = assignments.some(
+        (a: any) => a.tableId === table.id && a.isCurrent && !a.endTime
+      );
+      return (
+        table.status === TableStatus.Open &&
+        !hasCurrentAssignment &&
+        !table.isLocked &&
+        table.gameType !== GameType.Craps
+      );
+    });
 
-    const newAssignments = [];
-    let dealerIndex = 0;
-
-    for (const table of openTables) {
-      if (dealerIndex >= availableDealers.length) break;
-
-      const dealer = availableDealers[dealerIndex];
-      const assignment = {
-        id: Math.max(0, ...assignments.map((a: any) => a.id)) + newAssignments.length + 1,
-        dealerId: dealer.id,
-        tableId: table.id,
-        startTime: new Date(),
-        endTime: null,
-        isCurrent: true,
-        isAIGenerated: true,
-        createdAt: new Date()
+    if (emptyTables.length === 0) {
+      return {
+        assignmentsCreated: 0,
+        dealersAssigned: 0,
+        tablesStaffed: 0
       };
-
-      newAssignments.push(assignment);
-      dealers[dealers.findIndex((d: any) => d.id === dealer.id)].status = DealerStatus.Dealing;
-      dealerIndex++;
     }
 
-    assignments.push(...newAssignments);
-    saveDatabase();
+    const newAssignments = [];
+    const assignedDealerIds = new Set<number>();
+
+    // Process each empty table and find the best qualified dealer
+    for (const table of emptyTables) {
+      try {
+        // Create requirements based on table properties
+        const requirements: ParsedCommand = {
+          tableNumber: table.tableNumber,
+          gameType: table.gameType,
+          isHighLimit: table.isHighLimit,
+          pit: table.pit
+        };
+
+        // Find qualified dealers for this table using scoring system
+        const qualified = await this.autoRotationService.findQualifiedDealers(requirements);
+
+        if (qualified.length === 0) {
+          continue; // Skip if no qualified dealers
+        }
+
+        // Find the best dealer that hasn't been assigned yet in this batch
+        let bestDealer = null;
+        for (const qualifiedDealer of qualified) {
+          if (!assignedDealerIds.has(qualifiedDealer.dealer.id)) {
+            bestDealer = qualifiedDealer.dealer;
+            break;
+          }
+        }
+
+        // If all qualified dealers are already assigned, use the best one anyway (they can be rotated)
+        if (!bestDealer && qualified.length > 0) {
+          bestDealer = qualified[0].dealer;
+        }
+
+        if (!bestDealer) {
+          continue;
+        }
+
+        // Check if dealer is currently assigned to another table
+        const currentAssignment = assignments.find(
+          (a: any) => a.dealerId === bestDealer.id && a.isCurrent && !a.endTime
+        );
+
+        if (currentAssignment) {
+          // End current assignment (rotate dealer)
+          currentAssignment.endTime = new Date();
+          currentAssignment.isCurrent = false;
+
+          // Update dealer status
+          const dealerIndex = dealers.findIndex((d: any) => d.id === bestDealer.id);
+          if (dealerIndex !== -1) {
+            dealers[dealerIndex].status = DealerStatus.Available;
+          }
+        }
+
+        // Create new assignment
+        const assignment = {
+          id: Math.max(0, ...assignments.map((a: any) => a.id || 0)) + newAssignments.length + 1,
+          dealerId: bestDealer.id,
+          tableId: table.id,
+          position: 'Dealer',
+          startTime: new Date(),
+          endTime: null,
+          crapsRole: 0 as any,
+          isCurrent: true,
+          isAIGenerated: true,
+          createdAt: new Date()
+        };
+
+        newAssignments.push(assignment);
+        assignedDealerIds.add(bestDealer.id);
+
+        // Update dealer status to Dealing
+        const dealerIndex = dealers.findIndex((d: any) => d.id === bestDealer.id);
+        if (dealerIndex !== -1) {
+          dealers[dealerIndex].status = DealerStatus.Dealing;
+        }
+      } catch (error: any) {
+        console.error(`Failed to assign dealer to ${table.tableNumber}:`, error.message);
+        continue;
+      }
+    }
+
+    // Save all new assignments
+    if (newAssignments.length > 0) {
+      assignments.push(...newAssignments);
+      saveDatabase();
+    }
     
     return {
       assignmentsCreated: newAssignments.length,
-      dealersAssigned: dealerIndex,
+      dealersAssigned: assignedDealerIds.size,
       tablesStaffed: newAssignments.length
     };
   }
